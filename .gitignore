@@ -1,0 +1,48 @@
+## =====================================
+## .NET / C# / ASP.NET Core .gitignore
+## =====================================
+
+# Carpetas de compilación y binarios
+bin/
+obj/
+publish/
+
+# Archivos de depuración y estado de usuario
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Archivos generados por Visual Studio / Rider / VS Code
+.vs/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+
+# Herramientas de pruebas y cobertura
+TestResults/
+coverage/
+
+# Archivos de caché y logs
+*.log
+*.tmp
+*.bak
+_UpgradeReport_Files/
+UpgradeLog*.XML
+UpgradeLog*.htm
+
+# Archivos temporales del sistema operativo
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+._*
+
+# Archivos de configuración local con secretos (opcional para proteger contraseñas)
+# Descomenta la siguiente línea si deseas que git no suba tus credenciales locales:
+# appsettings.Development.json
