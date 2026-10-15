@@ -8,6 +8,13 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configuración de puerto dinámico para Railway / Docker (escuchar en 0.0.0.0)
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(port))
+{
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+}
+
 // Configuración de Entity Framework Core con SQL Server
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -101,18 +108,19 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
-// Pipeline de Middleware HTTP
+// Pipeline de Middleware HTTP (Swagger disponible siempre en la raíz '/')
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Horario Senati API v1");
+    c.RoutePrefix = string.Empty; // Muestra Swagger directamente en la raíz '/'
+});
+
+// En entornos con proxy como Railway, la redirección HTTPS es manejada por el proxy
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Horario Senati API v1");
-        c.RoutePrefix = string.Empty; // Muestra Swagger directamente en la raíz '/'
-    });
+    app.UseHttpsRedirection();
 }
-
-app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
 
